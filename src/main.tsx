@@ -2,25 +2,36 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
+import Body from "./components/body"; // Import Body here
 import About from "./pages/about.tsx";
+import Auth from "./pages/auth.tsx";
+import { Provider } from "./components/ui/provider";
 
-//Define your routes here
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />, 
     children: [
       {
-        path: "/about",
-        element: <About/>
-      }
+        index: true, 
+        element: <Body />, 
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
     ],
+  },
+  {
+    path: "/auth",
+    element: <Auth />,
   },
 ]);
 
-//Render the RouterProvider
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>
 );
