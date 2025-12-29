@@ -13,6 +13,7 @@ import { Field } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { CustomLink } from "@/components/customLink";
+import img from "@/assets/login.jpg"
 
 type LoginFormInputs = {
   email: string;
@@ -51,7 +52,7 @@ const Auth = () => {
       localStorage.setItem("email", response.data.email || "");
 
       toast.success("Login successful!");
-      navigate("/", { replace: true });
+      navigate("/home", { replace: true });
     } catch (error: any) {
       console.error(error);
       toast.error(error.response?.data?.message || "Login failed");
@@ -69,13 +70,14 @@ const Auth = () => {
       <Box
         h={"100vh"}
         w={"100%"}
-        display={"flex"}
+        display={{base: "grid", md: "flex"}}
         justifyContent={"center"}
+        alignItems={"center"}
         p={"5rem"}
         bg="rgba(189, 189, 189, 0.3)"
         backdropFilter="blur(10px)"
       >
-        <Box h={"100%"} w={"60%"} alignContent={"center"}>
+        <Box h={"100%"} w={"60%"} alignContent={"center"} display={{base: "none", md: "flex"}}>
           <Image
             h={"100%"}
             w={"100%"}
@@ -83,18 +85,19 @@ const Auth = () => {
               borderTopLeftRadius: "20px",
               borderBottomLeftRadius: "20px",
             }}
-            src="login.jpg"
+            src={img}
             fit={"cover"}
             alt="login img"
           />
         </Box>
         <chakra.form
           onSubmit={handleSubmit(onSubmit)}
-          width="40%"
-          p="3rem"
+          w={{base: "90vw", md: "40%"}}
+          h={{base: "60vh", md: "100%"}}
+          p={{base: "1rem", md: "3rem"}}
           background={"#ffffffff"}
           border="1px solid rgba(136, 134, 134, 0.2)"
-          borderRightRadius="15px"
+          borderRightRadius={{base: "0", md: "15px"}}
           backdropFilter="blur(10px)"
           alignContent={"center"}
         >
@@ -103,7 +106,7 @@ const Auth = () => {
               Sign In
             </Text>
             <Text fontSize={"1rem"} color={"black"}>
-              Please sign in to access FoodChain
+              Please sign in to access TrendSense
             </Text>
 
             <Field.Root color={"black"} invalid={!!errors.email}>
@@ -154,7 +157,7 @@ const Auth = () => {
               Sign In
             </Button>
 
-            <Text
+            {/* <Text
               textAlign={"center"}
               mt={"2rem"}
               fontSize={"1rem"}
@@ -162,9 +165,9 @@ const Auth = () => {
               fontWeight={"medium"}
             >
               <CustomLink to="/register" color="black">
-                New to FoodChain? Sign Up
+                New to TrendSense? Sign Up
               </CustomLink>
-            </Text>
+            </Text> */}
           </VStack>
         </chakra.form>
       </Box>

@@ -1,17 +1,20 @@
 import Navbar from "@/components/navbar";
 import { Box, Container } from "@chakra-ui/react";
-import { Outlet } from "react-router-dom";
-// Remove: import Body from "./components/body"; 
+import { Outlet, useLocation } from "react-router-dom";
 
 function App() {
+  const location = useLocation();
+
+  const hideNavbar = location.pathname === "/";
+
   return (
-    <Box h="100vh" display="flex" flexDirection="column">
-      <Container fluid p={0} h={"10vh"}>
-        <Navbar />
+    <Box h="100%" display="flex" flexDirection="column">
+      <Container fluid p={0} h={"auto"}>
+        {!hideNavbar && <Navbar />}
       </Container>
-      
-      <Box flex="1" overflow="auto"> 
-        <Outlet /> 
+
+      <Box flex="1">
+        <Outlet />
       </Box>
     </Box>
   );
