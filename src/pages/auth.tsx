@@ -12,11 +12,11 @@ import axios from "axios";
 import { Field } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { CustomLink } from "@/components/customLink";
-import img from "@/assets/login.jpg"
+import { CustomLink } from "@/components/customLink"; 
+import img from "@/assets/login.jpg";
 
 type LoginFormInputs = {
-  email: string;
+  username: string; 
   password: string;
 };
 
@@ -32,30 +32,34 @@ const Auth = () => {
   const onSubmit = async (data: LoginFormInputs) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/auth/login",
-        data
+        "http://127.0.0.1:5001/api/auth/login",
+        data 
       );
 
-      const token =
-        response.data.accessToken ||
-        response.data.token ||
-        response.data.access_token ||
-        response.data.jwt;
+      const token = response.data.access_token;
+      const user = response.data.user;
 
       if (!token) {
-        toast.error("Login succeeded but no token found in response!");
+        toast.error("Login succeeded but no token found!");
         return;
       }
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("name", response.data.name || "User");
-      localStorage.setItem("email", response.data.email || "");
+      localStorage.setItem("access_token", token);
+      
+      if (user) {
+        localStorage.setItem("username", user.username || "");
+        localStorage.setItem("role", user.role || "");
+        localStorage.setItem("userId", user.id || "");
+      }
 
-      toast.success("Login successful!");
+      toast.success(`Welcome back, ${user?.username || "User"}!`);
+      
       navigate("/home", { replace: true });
+
     } catch (error: any) {
       console.error(error);
-      toast.error(error.response?.data?.message || "Login failed");
+      const errorMsg = error.response?.data?.msg || "Login failed";
+      toast.error(errorMsg);
     }
   };
 
@@ -70,14 +74,19 @@ const Auth = () => {
       <Box
         h={"100vh"}
         w={"100%"}
-        display={{base: "grid", md: "flex"}}
+        display={{ base: "grid", md: "flex" }}
         justifyContent={"center"}
         alignItems={"center"}
         p={"5rem"}
         bg="rgba(189, 189, 189, 0.3)"
         backdropFilter="blur(10px)"
       >
-        <Box h={"100%"} w={"60%"} alignContent={"center"} display={{base: "none", md: "flex"}}>
+        <Box
+          h={"100%"}
+          w={"60%"}
+          alignContent={"center"}
+          display={{ base: "none", md: "flex" }}
+        >
           <Image
             h={"100%"}
             w={"100%"}
@@ -90,14 +99,15 @@ const Auth = () => {
             alt="login img"
           />
         </Box>
+
         <chakra.form
           onSubmit={handleSubmit(onSubmit)}
-          w={{base: "90vw", md: "40%"}}
-          h={{base: "60vh", md: "100%"}}
-          p={{base: "1rem", md: "3rem"}}
+          w={{ base: "90vw", md: "40%" }}
+          h={{ base: "60vh", md: "100%" }}
+          p={{ base: "1rem", md: "3rem" }}
           background={"#ffffffff"}
           border="1px solid rgba(136, 134, 134, 0.2)"
-          borderRightRadius={{base: "0", md: "15px"}}
+          borderRightRadius={{ base: "0", md: "15px" }}
           backdropFilter="blur(10px)"
           alignContent={"center"}
         >
@@ -109,16 +119,16 @@ const Auth = () => {
               Please sign in to access TrendSense
             </Text>
 
-            <Field.Root color={"black"} invalid={!!errors.email}>
-              <Field.Label>Email</Field.Label>
+            <Field.Root color={"black"} invalid={!!errors.username}>
+              <Field.Label>Username</Field.Label>
               <Input
-                placeholder="email"
+                placeholder="Enter your username"
                 _placeholder={{ color: "#6a6c6d" }}
-                {...register("email", { required: "Email is required" })}
+                {...register("username", { required: "Username is required" })}
               />
-              {errors.email && (
+              {errors.username && (
                 <Text color="red.500" fontSize="sm">
-                  {errors.email.message}
+                  {errors.username.message}
                 </Text>
               )}
             </Field.Root>
@@ -127,7 +137,7 @@ const Auth = () => {
               <Field.Label>Password</Field.Label>
               <Input
                 type="password"
-                placeholder="password"
+                placeholder="Enter your password"
                 _placeholder={{ color: "#6a6c6d" }}
                 {...register("password", {
                   required: "Password is required",
@@ -145,7 +155,7 @@ const Auth = () => {
             </Field.Root>
 
             <Button
-              mt={2}
+              mt={4}
               colorScheme="teal"
               loading={isSubmitting}
               borderRadius={"10px"}
@@ -153,21 +163,11 @@ const Auth = () => {
               fontWeight={"bold"}
               type="submit"
               background={"#8A8A8A"}
+              _hover={{ background: "#666666" }}
+              color="white"
             >
               Sign In
             </Button>
-
-            {/* <Text
-              textAlign={"center"}
-              mt={"2rem"}
-              fontSize={"1rem"}
-              color={"black"}
-              fontWeight={"medium"}
-            >
-              <CustomLink to="/register" color="black">
-                New to TrendSense? Sign Up
-              </CustomLink>
-            </Text> */}
           </VStack>
         </chakra.form>
       </Box>
