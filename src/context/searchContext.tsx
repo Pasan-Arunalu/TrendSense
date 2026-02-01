@@ -1,11 +1,10 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
-// Define the shape of our filters
 export interface FilterState {
-  gender: string;   // e.g., "All", "Male", "Female", "Others"
-  region: string;   // e.g., "All", "Europe", "Asia"
-  minAge: number;   // Slider value
-  maxAge: number;   // Slider value
+  gender: string;   
+  region: string;  
+  minAge: number;   
+  maxAge: number; 
 }
 
 interface SearchContextType {
