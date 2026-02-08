@@ -8,6 +8,7 @@ import { SearchProvider } from "./context/searchContext";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import Auth from "./pages/auth";
+import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
 import UserManagement from "./pages/admin/UserManagement";
@@ -20,6 +21,10 @@ import ReviewHistory from "./pages/owner/ReviewHistory";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/auth",
     element: <Auth />,
   },
   {
