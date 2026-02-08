@@ -90,31 +90,12 @@ export const Dashboard = () => {
                             icon={LuUsers}
                             colorScheme="purple"
                         />
-                        <StatCard
-                            title="Prediction Batches"
-                            value={adminStats.predictions.total_batches}
-                            subtitle={`${adminStats.predictions.total_items} total items`}
-                            icon={LuFileStack}
-                            colorScheme="blue"
-                        />
-                        <StatCard
-                            title="Approved Items"
-                            value={adminStats.predictions.approved}
-                            icon={LuCircleCheck}
-                            colorScheme="green"
-                        />
-                        <StatCard
-                            title="Pending Review"
-                            value={adminStats.predictions.pending}
-                            icon={LuClock}
-                            colorScheme="orange"
-                        />
                     </SimpleGrid>
                 </Box>
             )}
 
             {/* Manager Stats */}
-            {hasRole(['manager', 'admin']) && managerStats && (
+            {hasRole(['manager']) && managerStats && (
                 <Box mb={8}>
                     <HStack mb={4}>
                         <Text fontSize="lg" fontWeight="semibold" color="fg.muted">
@@ -153,7 +134,7 @@ export const Dashboard = () => {
             )}
 
             {/* Owner Stats */}
-            {hasRole(['owner', 'admin']) && ownerStats && (
+            {hasRole(['owner']) && ownerStats && (
                 <Box mb={8}>
                     <HStack mb={4}>
                         <Text fontSize="lg" fontWeight="semibold" color="fg.muted">
@@ -205,7 +186,7 @@ export const Dashboard = () => {
                             color="purple"
                         />
                     )}
-                    {hasRole(['manager', 'admin']) && (
+                    {hasRole(['manager']) && (
                         <QuickActionCard
                             icon={LuSparkles}
                             title="Generate Predictions"
@@ -214,7 +195,7 @@ export const Dashboard = () => {
                             color="blue"
                         />
                     )}
-                    {hasRole(['owner', 'admin']) && (
+                    {hasRole(['owner']) && (
                         <QuickActionCard
                             icon={LuClipboardCheck}
                             title="Review Pending"
